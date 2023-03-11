@@ -1,4 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server';
+import { tweets } from './db.js';
 
 const typeDefs = gql`
   type Query {
@@ -20,7 +21,16 @@ const typeDefs = gql`
   }
 `;
 
-const server = new ApolloServer({ typeDefs });
+const resolvers = {
+  Query: {
+    tweet(root, { id }) {
+      console.log(id);
+      return tweets.find((element) => element.id === id);
+    },
+  },
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
 
 server.listen().then(({ url }) => {
   console.log(`running on ${url}`);
