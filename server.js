@@ -11,12 +11,25 @@ let tweets = [
     text: 'hello world second',
   },
 ];
+let users = [
+  {
+    id: '11',
+    firstName: 'apol',
+    lastName: 'lo',
+  },
+  {
+    id: '12',
+    firstName: 'gra',
+    lastName: 'phql',
+  },
+];
 
 //schema define
 const typeDefs = gql`
   type Query {
     allTweets: [Tweet!]!
     tweet(id: ID!): Tweet
+    allUsers: [User!]!
   }
   type Tweet {
     id: ID!
@@ -25,7 +38,9 @@ const typeDefs = gql`
   }
   type User {
     id: ID!
-    username: String!
+    firstName: String!
+    lastName: String!
+    fullName: String!
   }
   type Mutation {
     postTweet(text: String!, userId: ID!): Tweet!
@@ -43,6 +58,9 @@ const resolvers = {
     allTweets() {
       return tweets;
     },
+    allUsers() {
+      return users;
+    },
   },
   Mutation: {
     postTweet(root, { text, userId }) {
@@ -59,6 +77,12 @@ const resolvers = {
       }
       tweets = tweets.filter((item) => !(item.id === id));
       return true;
+    },
+  },
+  //fullName은 db에 없는것. resolver로 값 만들어 return
+  User: {
+    fullName({ firstName, lastName }) {
+      return `${firstName} ${lastName}`;
     },
   },
 };
