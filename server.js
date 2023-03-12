@@ -40,12 +40,21 @@ let users = [
 const typeDefs = gql`
   type Query {
     allTweets: [Tweet!]!
+    """
+    This is how write docs about /tweet
+    """
     tweet(id: ID!): Tweet
     allUsers: [User!]!
   }
+  """
+  This is how write docs about Type Tweet
+  """
   type Tweet {
     id: ID!
     text: String!
+    """
+    This is how write docs about Tweet-user
+    """
     user: User!
   }
   type User {
