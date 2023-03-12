@@ -4,11 +4,18 @@ import { ApolloServer, gql } from 'apollo-server';
 let tweets = [
   {
     id: '1',
-    text: 'hello world first',
+    text: 'hello world',
+    userId: '11',
   },
   {
     id: '2',
-    text: 'hello world second',
+    text: 'hello world too',
+    userId: '11',
+  },
+  {
+    id: '3',
+    text: 'third tweet',
+    userId: '13',
   },
 ];
 let users = [
@@ -21,6 +28,11 @@ let users = [
     id: '12',
     firstName: 'gra',
     lastName: 'phql',
+  },
+  {
+    id: 'DEL',
+    firstName: '',
+    lastName: '',
   },
 ];
 
@@ -83,6 +95,15 @@ const resolvers = {
   User: {
     fullName({ firstName, lastName }) {
       return `${firstName} ${lastName}`;
+    },
+  },
+  Tweet: {
+    user({ userId }) {
+      const user = users.find((i) => i.id === userId);
+      if (!user) {
+        return users.find((i) => i.id === 'DEL');
+      }
+      return user;
     },
   },
 };
